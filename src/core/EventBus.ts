@@ -88,7 +88,9 @@ export class EventBus {
     const eventHandlers = this.handlers.get(eventType);
     if (!eventHandlers || eventHandlers.size === 0) return;
 
-    for (const handler of eventHandlers) {
+    // Snapshot handlers before iterating — avoids issues if a handler
+    // calls on()/off() during dispatch (e.g. once() removing itself).
+    for (const handler of [...eventHandlers]) {
       try {
         handler(payload);
       } catch (err) {
@@ -117,17 +119,3 @@ export class EventBus {
   }
 
   /**
-   * Returns history filtered by event type — handy when debugging a
-   * specific event without wading through everything else.
-   */
-  getHistoryByType(eventType: string): Readonly<EditorEvent[]> {
-    return this.history.filter((e) => e.type === eventType);
-  }
-
-  private recordHistory(event: EditorEvent): void {
-    this.history.push(event);
-    if (this.history.length > this.maxHistory) {
-      this.history.shift();
-    }
-  }
-}
