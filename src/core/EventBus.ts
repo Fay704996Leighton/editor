@@ -28,7 +28,9 @@ export class EventBus {
 
   private handlers: HandlerMap = new Map();
   private history: EditorEvent[] = [];
-  private maxHistory = 100;
+  // Increased from 100 — I find myself needing more history when debugging
+  // complex scene interactions. 250 feels like a good balance.
+  private maxHistory = 250;
 
   private constructor() {}
 
@@ -121,5 +123,3 @@ export class EventBus {
     }
   }
 }
-
-export const eventBus = EventBus.getInstance();
