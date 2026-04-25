@@ -116,6 +116,14 @@ export class EventBus {
     return this.history;
   }
 
+  /**
+   * Returns history filtered by event type — handy when debugging a
+   * specific event without wading through everything else.
+   */
+  getHistoryByType(eventType: string): Readonly<EditorEvent[]> {
+    return this.history.filter((e) => e.type === eventType);
+  }
+
   private recordHistory(event: EditorEvent): void {
     this.history.push(event);
     if (this.history.length > this.maxHistory) {
