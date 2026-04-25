@@ -112,10 +112,21 @@ export class EventBus {
   }
 
   /**
-   * Returns recent event history (capped at maxHistory).
+   * Returns a copy of the event history, optionally filtered by event type.
+   * Handy for debugging — e.g. getHistory('selection:change') to see only
+   * selection events without wading through the full log.
    */
-  getHistory(): Readonly<EditorEvent[]> {
-    return this.history;
+  getHistory(eventType?: string): EditorEvent[] {
+    if (eventType) {
+      return this.history.filter((e) => e.type === eventType);
+    }
+    return [...this.history];
   }
 
-  /**
+  private recordHistory(event: EditorEvent): void {
+    this.history.push(event);
+    if (this.history.length > this.maxHistory) {
+      this.history.shift();
+    }
+  }
+}
