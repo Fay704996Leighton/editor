@@ -113,8 +113,8 @@ export class EventBus {
 
   /**
    * Returns a copy of the event history, optionally filtered by event type.
-   * Handy for debugging — e.g. getHistory('selection:change') to see only
-   * selection events without wading through the full log.
+   * Handy for debugging — I use this in the browser console to inspect
+   * what events fired during a particular interaction.
    */
   getHistory(eventType?: string): EditorEvent[] {
     if (eventType) {
