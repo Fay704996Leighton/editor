@@ -112,19 +112,15 @@ export class EventBus {
   }
 
   /**
-   * Returns a copy of the event history.
-   * Useful for debugging — I use this in the browser console to inspect
-   * what events fired during a problematic interaction.
+   * Returns a copy of the event history, optionally filtered by event type.
+   * Handy for debugging — I use this in the browser console to inspect
+   * what events fired during a given interaction.
    */
-  getHistory(): EditorEvent[] {
+  getHistory(eventType?: string): EditorEvent[] {
+    if (eventType) {
+      return this.history.filter((e) => e.type === eventType);
+    }
     return [...this.history];
-  }
-
-  /**
-   * Clears the event history buffer without affecting subscribed handlers.
-   */
-  clearHistory(): void {
-    this.history = [];
   }
 
   private recordHistory(event: EditorEvent): void {
